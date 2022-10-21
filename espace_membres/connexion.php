@@ -6,7 +6,7 @@
             $email= htmlspecialchars($_POST['email']);
             $mdp= password_hash($_POST['mdp'],PASSWORD_ARGON2ID);
 
-            $recupUser = $bdd->prepare('SELECT * FROM users WHERE pseudo =? and mdp=?');
+            $recupUser = $bdd->prepare('SELECT * FROM users WHERE email =? and mdp=?');
             $recupUser->execute(array($email,$mdp));
 
             if($recupUser->rowCount() > 0){
