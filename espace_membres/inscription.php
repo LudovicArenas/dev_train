@@ -14,11 +14,12 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
             $birth = htmlspecialchars($_POST['birth']);
             $mdp = password_hash($_POST['mdp'],PASSWORD_ARGON2I);
             $mdpc = password_hash($_POST['mdpc'],PASSWORD_ARGON2I);
-            $insertUser = $bdd->prepare('INSERT INTO users (nom,prenom,pseudo,genre,email,tel,birth,mdp,mdpc)VALUES(?,?,?,?,?,?,?,?,?)');
+            $insertUser = $bdd->prepare('INSERT INTO users (nom,prenom,pseudo,genre,email,tel,birth,mdp,mdpc)VALUES(?,?,?,?,?,?,?,?,?)');;
             $insertUser->execute(array($nom,$prenom,$pseudo,$genre,$email,$tel,$birth,$mdp,$mdpc));
 
-            $recupUser = $bdd->prepare('SELECT * FROM users WHERE nom=? and prenom=? and pseudo=? and genre=? and email=?,tel=? and birth=? and mdp=? and mdpc=?');
+            $recupUser = $bdd->prepare('SELECT * FROM users WHERE nom=? and prenom=? and pseudo=? and genre=? and email=? and tel=? and birth=? and mdp=? and mdpc=?'); 
             $recupUser->execute(array($nom,$prenom,$pseudo,$genre,$email,$tel,$birth,$mdp,$mdpc));
+        
             if($recupUser->rowCount()>0){
 
                 $_SESSION['nom'] = $nom;
@@ -31,6 +32,8 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                 $_SESSION['mdp'] = $mdp;
                 $_SESSION['mdpc'] = $mdpc;
                 $_SESSION['id'] = $recupUser->fetch()['id'];
+
+                header('Location:index.php');
             }
 
            
